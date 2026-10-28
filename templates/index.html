@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.tailwindcss.com"></script>
     <title>Document</title>
 </head>
-<body> 
+<body class="bg-gray-100 font-sans p-10"> 
     <form action="/add" method="post">
         <input type="text" name="nome" placeholder="Nome do Dispositivo" required>
         <input type="text" name="host" placeholder="Host" required>
@@ -13,7 +14,7 @@
         <button type="submit">Adicionar Dispositivo</button>
     </form>
 
-    <table>
+    <table class="min-w-full bg-white rounded-lg shadow-md overflow-hidden">
         <thead>
             <tr>
                 <th scope="col">Dispositivo</th>
@@ -25,8 +26,14 @@
         {% for dispositivo in dispositivos %}
         <tr>
             <td>{{ dispositivo.nome }}</td>
-            <td>{% if dispositivo.ping_status == True %} Online {% elif dispositivo.ping_status == False %} Offline {% else %} N/A {% endif %} </td>
-            <td> {% if dispositivo.http_status == True %} Online {% elif dispositivo.http_status == False %} Offline {% else %} N/A {% endif %} </td>
+            <td>{{ dispositivo.ping_status }}</td>
+            <td> {% if dispositivo.http_status == 'ONLINE' %} Online {% elif dispositivo.http_status == 'OFFLINE' %} Offline {% else %} N/A {% endif %} </td>
+            <td>
+            <form action="/remover/{{dispositivo.id}}" method="post" style="display: inline;">
+                <button type="submit">Deletar</button>
+            </form>
+            </td>
+            
 
         </tr>
         {% endfor %}

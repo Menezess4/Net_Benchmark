@@ -11,6 +11,13 @@ def criar_tabela():
     conn.commit()
     conn.close()
 
+def excluir_tabela(id):
+    conn = iniciar_banco()
+    cursor = conn.cursor()
+    cursor.execute('DELETE FROM dispositivos WHERE id=?', (id,))
+    conn.commit()
+    conn.close() 
+
 def salvar_log(nome, ping, http):
     conn = iniciar_banco()
     cursor = conn.cursor()
@@ -21,7 +28,7 @@ def salvar_log(nome, ping, http):
 def listar_dispositivos():
     conn = iniciar_banco()
     cursor = conn.cursor()
-    cursor.execute('SELECT nome, host, url FROM dispositivos')
+    cursor.execute('SELECT id, nome, host, url FROM dispositivos')
     dados = cursor.fetchall()
     conn.close()
     return dados

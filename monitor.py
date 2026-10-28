@@ -1,11 +1,15 @@
 import subprocess
 import requests
+import re
 
 def checar_ping(host):
     comando = ['ping', '-n', '1', host]
     try:
-        resultado = subprocess.run(comando, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        resultado = subprocess.run(comando, stdout=subprocess.PIPE, text=True)
         if resultado.returncode == 0:
+            busca =re.search(r'(?:tempo|time)=?(\d+)ms', resultado.stdout)
+            if busca:
+                return (f"{busca.group(1)}ms")
             return True
     except subprocess.CalledProcessError:
         return False
